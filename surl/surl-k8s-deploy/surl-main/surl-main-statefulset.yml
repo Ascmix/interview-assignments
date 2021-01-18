@@ -1,11 +1,13 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: surl-main
   labels:
     app: surl-main 
 spec:
-  replicas: 3
+  serviceName: surl-main
+  podManagementPolicy: Parallel
+  replicas: 2
   selector:
     matchLabels:
       app: surl-main
@@ -18,5 +20,10 @@ spec:
       - name: surl-main
         image: surl-main:0.0.1
         imagePullPolicy: IfNotPresent
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
         ports:
         - containerPort: 8080

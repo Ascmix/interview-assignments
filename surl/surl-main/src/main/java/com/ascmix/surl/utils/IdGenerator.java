@@ -31,8 +31,8 @@ public class IdGenerator {
     private long lastTimestamp = -1;
 
     private IdGenerator() {
-        // PROD ENV: read from environment
-        workerId = 1;
+        String podName = System.getenv("POD_NAME");
+        workerId = Integer.parseInt(podName.substring(podName.lastIndexOf("-") + 1));
         datacenterId = 1;
     }
 
